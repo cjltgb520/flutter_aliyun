@@ -11,7 +11,7 @@ const _xContentMd5 = 'content-md5';
 const _host = 'host';
 const _date = 'date';
 
-class HttpApiClient {
+class AliYunClient {
   /// Your access key ID
   String keyId;
 
@@ -26,11 +26,14 @@ class HttpApiClient {
   /// Defaults to `application/json`
   String defaultAcceptType;
 
-  HttpApiClient({
+  List<String> whiteListHeaders;
+
+  AliYunClient({
     required this.keyId,
     required this.accessKey,
     this.defaultContentType = _defaultContentType,
     this.defaultAcceptType = _defaultAcceptType,
+    this.whiteListHeaders = const [''],
   });
 
   Map<String, String> signedHeaders(String path, {
@@ -97,7 +100,7 @@ class HttpApiClient {
     var signHeadersStringBuilder = StringBuffer();
     var flag = 0;
     for (var header in headers.entries) {
-      if (header.key.startsWith('x-ca-')) {
+      if (header.key.startsWith('x-ca-') || whiteListHeaders.contains(header.key)) {
         if (flag != 0) {
           signHeadersStringBuilder.write(',');
         }
@@ -110,7 +113,7 @@ class HttpApiClient {
       'x-ca-signature-headers': signHeadersStringBuilder.toString()
     });
 
-    String signString = 'POST\n$defaultAcceptType\n${headers[_xContentMd5]}\n$defaultContentType\n${headers[_date]}\n';
+    String signString = '$method\n$defaultAcceptType\n${headers[_xContentMd5]}\n$defaultContentType\n${headers[_date]}\n';
     var sb = StringBuffer();
     for (var e in headersToSign.entries) {
       sb.write("${e.key}:${e.value}\n");
