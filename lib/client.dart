@@ -70,7 +70,7 @@ class AliYunClient {
 
     /// Set the `body`, if any
     if (body == null || method == 'GET') {
-      body = '';
+      body = '{}';
     }
 
     /// Sets or generate the `dateTime` parameter needed for the signature
