@@ -68,10 +68,8 @@ class AliYunClient {
       headers['accept'] = defaultAcceptType;
     }
 
-    /// Set the `body`, if any
-    if (body == null || method == 'GET') {
-      body = '{}';
-    }
+    /// Set the `body`
+    body ??= '{}';
 
     /// Sets or generate the `dateTime` parameter needed for the signature
     dateTime ??= DateTime.now();
