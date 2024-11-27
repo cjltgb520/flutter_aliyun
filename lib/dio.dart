@@ -7,7 +7,7 @@ import 'client.dart';
 extension DioExtension on RequestOptions {
   RequestOptions sign(AliYunClient client, {DateTime? dateTime}) {
     final signed = client.signedHeaders(
-        '$baseUrl$path',
+        uri.toString(),
         method: method,
         headers: headers,
         body: data != null ? jsonEncode(data) : null,
